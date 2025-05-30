@@ -3,9 +3,9 @@ import Weather from "./components/Weather";
 import Chart from "./components/Chart";
 import Navbar from "./components/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./app.css";
+import "./App.css";
 import Heading from "./components/Heading";
-import { set } from "ol/transform";
+
 
 function App() {
   const [lat, setlat] = useState("");
@@ -76,9 +76,7 @@ function App() {
     }
   }
 
-  // useEffect(() => {
-  //   Handle();
-  // }, []);
+  
 
   const getCurrentLocation = () => {
     if ("geolocation" in navigator) {
