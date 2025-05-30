@@ -4,6 +4,8 @@ import Chart from "./components/Chart";
 import Navbar from "./components/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./app.css";
+import Heading from "./components/Heading";
+import { set } from "ol/transform";
 
 function App() {
   const [lat, setlat] = useState("");
@@ -23,8 +25,7 @@ function App() {
   const Temprature = { temp } + "c";
   const [windDeg, setWindDeg] = useState("");
   const [windGust, setWindGust] = useState("");
-  const [error,seterror]=useState("");
-  
+  const [error, seterror] = useState(false);
 
   async function Handle() {
     try {
@@ -39,15 +40,17 @@ function App() {
       const data = await response.json();
 
       if (data.cod === "404") {
-        
-        alert("Enter a valid city name");
-       
-      
+        seterror(true);
+        console.log(error);
+        setcity("");
+
         return;
+      } else {
+        seterror(false);
       }
 
-      console.log(data)
-     
+      console.log(data);
+
       setlon(data.coord.lon);
       setlat(data.coord.lat);
       setcity(data.name);
@@ -74,9 +77,9 @@ function App() {
   }
 
   // useEffect(() => {
-  //   Handle(); 
+  //   Handle();
   // }, []);
-  
+
   const getCurrentLocation = () => {
     if ("geolocation" in navigator) {
       const watcher = navigator.geolocation.watchPosition(
@@ -84,14 +87,13 @@ function App() {
           const { latitude, longitude } = position.coords;
           setlat(latitude.toFixed(6));
           setlon(longitude.toFixed(6));
-  
+
           try {
             const response = await fetch(
               `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
             );
             const data = await response.json();
-  
-          
+
             setcity(data.name);
             setcountry(data.sys.country);
             settemp((data.main.temp - 273.15).toFixed(2));
@@ -105,8 +107,7 @@ function App() {
             seticon(
               `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
             );
-  
-            
+
             navigator.geolocation.clearWatch(watcher);
           } catch (error) {
             console.error("Error fetching location data:", error);
@@ -121,12 +122,12 @@ function App() {
     } else {
       alert("Geolocation is not supported by your browser.");
     }
-  
   };
-  
+
   return (
     <>
       <BrowserRouter>
+        <Heading />
         <Navbar />
         <Routes>
           <Route
@@ -148,9 +149,8 @@ function App() {
                 pressure={pressure}
                 sea={sea}
                 icon={icon}
-                getCurrentLocation = {getCurrentLocation}
-                error ={error}
-                
+                getCurrentLocation={getCurrentLocation}
+                error={error}
               />
             }
           />
@@ -169,8 +169,8 @@ function App() {
                 pressure={pressure}
                 windDeg={windDeg}
                 windGust={windGust}
-                getCurrentLocation = {getCurrentLocation}
-               
+                getCurrentLocation={getCurrentLocation}
+                error={error}
               />
             }
           />

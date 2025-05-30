@@ -1,22 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
-
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  
   return (
-   <>
-    <nav>
-    <ul>
-    <li><Link to="/" className='link'>weather</Link></li>
-    <li><Link to="/chart" className='link' >insights</Link></li>
-    </ul>
+    <>
+      <nav className="navbar">
+        <ul>
+          <li>
+            <Link to="/" className="link">
+              weather
+            </Link>
+          </li>
+          <li>
+            <Link to="/chart" className="link">
+              insights
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </>
+  );
+};
 
-   </nav>
-   
-   </>
-  )
-}
-
-export default Navbar
+export default Navbar;

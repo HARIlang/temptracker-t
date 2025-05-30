@@ -10,9 +10,23 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import WindRadarChart from "./WindRadarChart";
 
 import MapView from "./MapView";
+// const placeholder = "incorrect data";
 
-function Chart({windDeg,windGust,wind,city,setcity,temp, pressure, humidity, Handle, lat,lon , getCurrentLocation}) {
-  
+function Chart({
+  windDeg,
+  windGust,
+  wind,
+  city,
+  setcity,
+  temp,
+  pressure,
+  humidity,
+  Handle,
+  lat,
+  lon,
+  getCurrentLocation,
+  error,
+}) {
   return (
     <>
       <div className="container">
@@ -20,21 +34,22 @@ function Chart({windDeg,windGust,wind,city,setcity,temp, pressure, humidity, Han
           type="text"
           name="city"
           value={city}
+          placeholder={error ? "incorrect data" : "enter the city name "}
+          className={error ? "red " : ""}
           onChange={(e) => setcity(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && Handle()}
-          placeholder="enter the city name"
         />
         <button onClick={Handle}>
           <i className="fa-solid fa-magnifying-glass"></i>
         </button>
-        <button onClick={getCurrentLocation }>glocation</button>
+        <button onClick={getCurrentLocation}>glocation</button>
         {/* <button onClick={getCurrentLocation}>geolocation</button> */}
 
         <div className="box">
           <div>
             {" "}
             <GaugeComponent
-              className="gauge"
+              className="gauge box-gauge"
               type="semicircle"
               arc={{
                 width: 0.2,
@@ -115,7 +130,7 @@ function Chart({windDeg,windGust,wind,city,setcity,temp, pressure, humidity, Han
           <div>
             {" "}
             <GaugeComponent
-              className="wind_speed_gauge"
+              className="wind_speed_gauge box-gauge"
               type="semicircle"
               arc={{
                 width: 0.2,
@@ -182,7 +197,7 @@ function Chart({windDeg,windGust,wind,city,setcity,temp, pressure, humidity, Han
           </div>
           <div>
             <GaugeComponent
-              className="pressure_gauge"
+              className="pressure_gauge box-gauge"
               type="semicircle"
               arc={{
                 width: 0.2,
@@ -190,19 +205,19 @@ function Chart({windDeg,windGust,wind,city,setcity,temp, pressure, humidity, Han
                 cornerRadius: 1,
                 subArcs: [
                   {
-                    limit: 14.7, 
+                    limit: 14.7,
                     color: "#91b2e8",
                     showTick: true,
                     tooltip: { text: "Low Pressure" },
                   },
                   {
-                    limit: 15.5, 
+                    limit: 15.5,
                     color: "aqua",
                     showTick: true,
                     tooltip: { text: "Normal Pressure" },
                   },
                   {
-                    limit: 16.5, 
+                    limit: 16.5,
                     color: "#5BE12C",
                     showTick: true,
                     tooltip: { text: "High Pressure" },
@@ -226,14 +241,10 @@ function Chart({windDeg,windGust,wind,city,setcity,temp, pressure, humidity, Han
                     formatTextValue: (value) => value + " PSI",
                     style: { fontSize: 10 },
                   },
-                  ticks: [
-                    { value: 14 }, 
-                    { value: 15 },
-                    { value: 16 },
-                  ],
+                  ticks: [{ value: 14 }, { value: 15 }, { value: 16 }],
                 },
               }}
-              value={pressure} 
+              value={pressure}
               minValue={13}
               maxValue={17}
             />
@@ -241,7 +252,7 @@ function Chart({windDeg,windGust,wind,city,setcity,temp, pressure, humidity, Han
           </div>
           <div>
             <GaugeComponent
-              className="humidity_gauge"
+              className="humidity_gauge box-gauge"
               type="semicircle"
               arc={{
                 width: 0.2,
